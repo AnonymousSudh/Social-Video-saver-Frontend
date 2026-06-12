@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { useTheme } from '../context/ThemeContext';
+import { SHOW_ADS } from '../services/ads';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-3940256099942544/6300978111';
 
@@ -10,6 +11,10 @@ const AdBanner = () => {
   const [hasError, setHasError] = useState(false);
   const { colors } = useTheme();
   const styles = getStyles(colors);
+
+  if (!SHOW_ADS) {
+    return null;
+  }
 
   if (hasError) {
     return (
