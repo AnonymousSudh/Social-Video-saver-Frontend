@@ -1,7 +1,8 @@
 // src/components/PremiumModal/PremiumModal.tsx
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView } from 'react-native';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type Props = {
   visible: boolean;
@@ -10,6 +11,8 @@ type Props = {
 
 const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly' | 'lifetime'>('yearly');
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
 
   const plans = [
     { id: 'monthly', title: 'Monthly Plan', price: '$2.99', duration: 'mo', detail: 'Cancel anytime' },
@@ -29,12 +32,12 @@ const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
           <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
             <Text style={styles.closeText}>✕</Text>
           </TouchableOpacity>
-
+ 
           <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             <Text style={styles.badge}>💎 PRO UPGRADE</Text>
             <Text style={styles.title}>Go Premium</Text>
             <Text style={styles.subtitle}>Unlock the full power of InstaSave Pro</Text>
-
+ 
             {/* Benefits */}
             <View style={styles.benefitsContainer}>
               <View style={styles.benefitRow}>
@@ -54,7 +57,7 @@ const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
                 <Text style={styles.benefitText}>Priority Processing & Background Queues</Text>
               </View>
             </View>
-
+ 
             {/* Plans List */}
             <View style={styles.plansContainer}>
               {plans.map((plan) => (
@@ -85,12 +88,12 @@ const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
                 </TouchableOpacity>
               ))}
             </View>
-
+ 
             {/* Purchase CTA */}
             <TouchableOpacity style={styles.purchaseBtn} onPress={onClose}>
               <Text style={styles.purchaseBtnText}>Upgrade Now</Text>
             </TouchableOpacity>
-
+ 
             <Text style={styles.footerText}>Secure payment processing. Restore anytime.</Text>
           </ScrollView>
         </View>
@@ -99,18 +102,18 @@ const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.85)',
     justifyContent: 'flex-end',
   },
   card: {
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
     maxHeight: '90%',
     paddingTop: 20,
     paddingHorizontal: Spacing.m,
@@ -123,13 +126,13 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,
   },
   closeText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 14,
   },
   scrollContent: {
@@ -137,7 +140,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   badge: {
-    color: Colors.secondaryAccent,
+    color: colors.secondaryAccent,
     backgroundColor: 'rgba(131, 56, 236, 0.15)',
     fontSize: 11,
     fontWeight: '900',
@@ -148,13 +151,13 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.s,
   },
   title: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 26,
     fontWeight: '900',
     textAlign: 'center',
   },
   subtitle: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 4,
@@ -162,11 +165,11 @@ const styles = StyleSheet.create({
   },
   benefitsContainer: {
     width: '100%',
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: Spacing.m,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
     marginBottom: Spacing.l,
     gap: 12,
   },
@@ -176,12 +179,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   checkIcon: {
-    color: Colors.success,
+    color: colors.success,
     fontSize: 16,
     fontWeight: 'bold',
   },
   benefitText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 13,
     fontWeight: '500',
   },
@@ -194,17 +197,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     padding: Spacing.m,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
     position: 'relative',
   },
   selectedPlanCard: {
-    borderColor: Colors.primary,
+    borderColor: colors.primary,
     backgroundColor: 'rgba(255, 0, 110, 0.04)',
-    shadowColor: Colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.2,
     shadowRadius: 10,
@@ -221,23 +224,23 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   popularBadge: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     color: '#ffffff',
   },
   lifetimeBadge: {
-    backgroundColor: Colors.secondaryAccent,
+    backgroundColor: colors.secondaryAccent,
     color: '#ffffff',
   },
   planMain: {
     flex: 1,
   },
   planTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 15,
     fontWeight: 'bold',
   },
   planDetail: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 11,
     marginTop: 2,
   },
@@ -246,21 +249,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   planPrice: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 18,
     fontWeight: '900',
   },
   planDuration: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 11,
   },
   purchaseBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     width: '100%',
     paddingVertical: 15,
     borderRadius: 16,
     alignItems: 'center',
-    shadowColor: Colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.35,
     shadowRadius: 12,
@@ -273,7 +276,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
   },
   footerText: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 10,
     textAlign: 'center',
   },

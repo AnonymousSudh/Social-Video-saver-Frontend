@@ -1,7 +1,8 @@
 // src/components/QualitySheet/QualitySheet.tsx
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Image } from 'react-native';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type Props = {
   visible: boolean;
@@ -16,6 +17,9 @@ type Props = {
 };
 
 const QualitySheet: React.FC<Props> = ({ visible, videoData, onSelectQuality, onClose }) => {
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
+
   if (!videoData) return null;
 
   const duration = videoData.duration || 30; // Fallback to 30 seconds
@@ -102,7 +106,7 @@ const QualitySheet: React.FC<Props> = ({ visible, videoData, onSelectQuality, on
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   backdrop: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.65)',
@@ -112,11 +116,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   sheet: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
     paddingTop: 12,
     paddingHorizontal: Spacing.m,
     paddingBottom: Spacing.l,
@@ -126,12 +130,12 @@ const styles = StyleSheet.create({
     width: 40,
     height: 4,
     borderRadius: 2,
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     alignSelf: 'center',
     marginBottom: Spacing.m,
   },
   title: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -139,13 +143,13 @@ const styles = StyleSheet.create({
   },
   videoCard: {
     flexDirection: 'row',
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     borderRadius: 12,
     padding: Spacing.s,
     marginBottom: Spacing.m,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
   },
   thumbnail: {
     width: 60,
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   placeholderText: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 9,
   },
   videoInfo: {
@@ -168,19 +172,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   videoTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 13,
     fontWeight: '600',
     lineHeight: 18,
   },
   videoCreator: {
-    color: Colors.primary,
+    color: colors.primary,
     fontSize: 11,
     fontWeight: '500',
     marginTop: 2,
   },
   videoDuration: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 11,
     marginTop: 2,
   },
@@ -196,21 +200,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 14,
     paddingHorizontal: Spacing.m,
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
   },
   optionMain: {
     flex: 1,
   },
   qualityLabel: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 15,
     fontWeight: 'bold',
   },
   qualitySub: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 12,
     marginTop: 2,
   },
@@ -219,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sizeText: {
-    color: Colors.accent,
+    color: colors.secondaryAccent,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -234,21 +238,21 @@ const styles = StyleSheet.create({
   },
   premiumTag: {
     backgroundColor: 'rgba(236, 72, 153, 0.15)',
-    color: Colors.accent,
+    color: colors.secondaryAccent,
   },
   hdTag: {
     backgroundColor: 'rgba(139, 92, 246, 0.15)',
-    color: Colors.primary,
+    color: colors.primary,
   },
   closeBtn: {
     paddingVertical: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     borderRadius: 12,
   },
   closeBtnText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 15,
     fontWeight: '600',
   },

@@ -1,7 +1,8 @@
 // src/components/ClipboardPopup/ClipboardPopup.tsx
 import React from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type Props = {
   visible: boolean;
@@ -11,6 +12,9 @@ type Props = {
 };
 
 const ClipboardPopup: React.FC<Props> = ({ visible, url, onPaste, onClose }) => {
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
+
   return (
     <Modal
       transparent={true}
@@ -41,7 +45,7 @@ const ClipboardPopup: React.FC<Props> = ({ visible, url, onPaste, onClose }) => 
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -50,8 +54,8 @@ const styles = StyleSheet.create({
     padding: Spacing.l,
   },
   card: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 16,
     padding: Spacing.l,
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   },
   badge: {
     backgroundColor: 'rgba(139, 92, 246, 0.15)',
-    color: Colors.primary,
+    color: colors.primary,
     fontSize: 11,
     fontWeight: 'bold',
     paddingHorizontal: 10,
@@ -76,14 +80,14 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.s,
   },
   title: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: Spacing.s,
   },
   urlText: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 13,
     textAlign: 'center',
     marginBottom: Spacing.l,
@@ -98,11 +102,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     alignItems: 'center',
   },
   cancelText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
     flex: 1.5,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     alignItems: 'center',
   },
   pasteText: {

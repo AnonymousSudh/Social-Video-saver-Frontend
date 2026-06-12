@@ -2,7 +2,8 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Share, ActivityIndicator, Platform } from 'react-native';
 import Video from 'react-native-video';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type Props = {
   visible: boolean;
@@ -20,6 +21,8 @@ const VideoPlayerModal: React.FC<Props> = ({ visible, videoPath, videoTitle, onC
   const [progressBarWidth, setProgressBarWidth] = useState(0);
 
   const playerRef = useRef<any>(null);
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
 
   if (!videoPath) return null;
 
@@ -109,7 +112,7 @@ const VideoPlayerModal: React.FC<Props> = ({ visible, videoPath, videoTitle, onC
 
         {loading && (
           <View style={styles.loaderContainer}>
-            <ActivityIndicator size="large" color={Colors.primary} />
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
         )}
 
@@ -177,7 +180,7 @@ const VideoPlayerModal: React.FC<Props> = ({ visible, videoPath, videoTitle, onC
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000000',
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   timeText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 11,
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
   },
@@ -262,15 +265,15 @@ const styles = StyleSheet.create({
   seekbarFill: {
     height: '100%',
     borderRadius: 3,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   seekbarKnob: {
     position: 'absolute',
     width: 14,
     height: 14,
     borderRadius: 7,
-    backgroundColor: Colors.text,
-    shadowColor: Colors.primary,
+    backgroundColor: colors.text,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
@@ -290,7 +293,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
   },
   aspectBtnText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 11,
     fontWeight: 'bold',
   },
@@ -303,7 +306,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   seekBtnText: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -311,10 +314,10 @@ const styles = StyleSheet.create({
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: Colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 8,

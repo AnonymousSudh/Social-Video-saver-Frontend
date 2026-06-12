@@ -58,7 +58,6 @@ const App = () => {
       <ThemeProvider>
         <ToastProvider>
           <DownloadProvider>
-            <StatusBar barStyle="light-content" backgroundColor="#0F1115" />
             <RootNavigator />
           </DownloadProvider>
         </ToastProvider>

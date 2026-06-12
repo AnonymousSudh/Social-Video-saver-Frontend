@@ -1,7 +1,7 @@
 // src/components/Toast/Toast.tsx
 import React, { createContext, useContext, useState, useRef, ReactNode } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { Colors } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type ToastType = 'success' | 'error' | 'info';
 
@@ -12,6 +12,7 @@ type ToastContextType = {
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
 export const ToastProvider = ({ children }: { children: ReactNode }) => {
+  const { colors } = useTheme();
   const [message, setMessage] = useState('');
   const [type, setType] = useState<ToastType>('success');
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -62,12 +63,12 @@ export const ToastProvider = ({ children }: { children: ReactNode }) => {
   const getBackgroundColor = () => {
     switch (type) {
       case 'success':
-        return Colors.success;
+        return colors.success;
       case 'error':
-        return Colors.error;
+        return colors.error;
       case 'info':
       default:
-        return Colors.primary;
+        return colors.primary;
     }
   };
 

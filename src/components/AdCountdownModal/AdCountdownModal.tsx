@@ -1,7 +1,8 @@
 // src/components/AdCountdownModal/AdCountdownModal.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 type Props = {
   visible: boolean;
@@ -10,6 +11,8 @@ type Props = {
 
 const AdCountdownModal: React.FC<Props> = ({ visible, onComplete }) => {
   const [seconds, setSeconds] = useState(3);
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
 
   useEffect(() => {
     if (!visible) {
@@ -39,21 +42,33 @@ const AdCountdownModal: React.FC<Props> = ({ visible, onComplete }) => {
       statusBarTranslucent={true}
     >
       <View style={styles.container}>
-        <Text style={styles.sponsoredLabel}>Sponsored Advertisement</Text>
+        <Text style={styles.sponsoredLabel}>Sponsored Upgrade</Text>
 
         <View style={styles.rewardContainer}>
           <Text style={styles.rewardIcon}>🎁</Text>
           <Text style={styles.preparingText}>Preparing your download...</Text>
         </View>
 
-        {/* Mock Ad Visual representation */}
+        {/* Clean Pro Promo instead of ugly developer mock ad */}
         <View style={styles.adPlaceholder}>
-          <View style={styles.adMediaBox}>
-            <ActivityIndicator size="large" color={Colors.primary} />
-            <Text style={styles.playSymbol}>▶</Text>
+          <View style={styles.adHeaderRow}>
+            <Text style={styles.adBadge}>💎 Premium Special</Text>
+            <Text style={styles.adSubtextMuted}>Ad-free experience</Text>
           </View>
-          <Text style={styles.adText}>AdMob Interstitial Video</Text>
-          <Text style={styles.adSubText}>Monetization Slot: Earn revenue on every download request</Text>
+          
+          <Text style={styles.adPromoTitle}>Unlock InstaSave Pro Premium</Text>
+          
+          <View style={styles.adPromoBenefits}>
+            <Text style={styles.adBenefitItem}>⚡ Hyper-Fast Speeds (No limits)</Text>
+            <Text style={styles.adBenefitItem}>🚫 Zero Ads & Interrupted Screens</Text>
+            <Text style={styles.adBenefitItem}>📂 Batch & Background downloads</Text>
+            <Text style={styles.adBenefitItem}>🌟 Priority support & HD resolutions</Text>
+          </View>
+
+          <View style={styles.adMediaBox}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={styles.analyzingText}>Analyzing video stream...</Text>
+          </View>
         </View>
 
         {/* Countdown footer */}
@@ -84,17 +99,17 @@ const AdCountdownModal: React.FC<Props> = ({ visible, onComplete }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     justifyContent: 'space-between',
     paddingTop: 60,
     paddingBottom: 40,
     paddingHorizontal: Spacing.l,
   },
   sponsoredLabel: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 11,
     fontWeight: '900',
     letterSpacing: 1,
@@ -103,56 +118,78 @@ const styles = StyleSheet.create({
   },
   rewardContainer: {
     alignItems: 'center',
-    marginVertical: Spacing.m,
+    marginVertical: Spacing.s,
   },
   rewardIcon: {
-    fontSize: 48,
-    marginBottom: Spacing.s,
+    fontSize: 40,
+    marginBottom: Spacing.xs,
   },
   preparingText: {
-    color: Colors.text,
-    fontSize: 20,
+    color: colors.text,
+    fontSize: 18,
     fontWeight: '900',
     textAlign: 'center',
   },
   adPlaceholder: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 24,
     padding: Spacing.m,
-    height: 320,
+    height: 300,
     justifyContent: 'center',
-    alignItems: 'center',
     width: '100%',
   },
-  adMediaBox: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: Colors.surfaceLight,
-    justifyContent: 'center',
+  adHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: Spacing.m,
-    position: 'relative',
+    marginBottom: Spacing.s,
   },
-  playSymbol: {
-    position: 'absolute',
-    color: Colors.textMuted,
-    fontSize: 18,
-    opacity: 0.5,
-  },
-  adText: {
-    color: Colors.text,
-    fontSize: 16,
+  adBadge: {
+    backgroundColor: 'rgba(255, 0, 110, 0.12)',
+    color: colors.primary,
+    fontSize: 10,
     fontWeight: 'bold',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    overflow: 'hidden',
   },
-  adSubText: {
-    color: Colors.textSecondary,
+  adSubtextMuted: {
+    color: colors.textMuted,
+    fontSize: 11,
+  },
+  adPromoTitle: {
+    color: colors.text,
+    fontSize: 18,
+    fontWeight: '900',
+    marginBottom: Spacing.m,
+  },
+  adPromoBenefits: {
+    gap: 8,
+    marginBottom: Spacing.m,
+  },
+  adBenefitItem: {
+    color: colors.textSecondary,
+    fontSize: 13,
+    fontWeight: '500',
+  },
+  adMediaBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: colors.surfaceLight,
+    padding: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    marginTop: Spacing.s,
+  },
+  analyzingText: {
+    color: colors.textSecondary,
     fontSize: 12,
-    textAlign: 'center',
-    marginTop: 8,
-    paddingHorizontal: Spacing.m,
+    fontWeight: '600',
   },
   footer: {
     alignItems: 'center',
@@ -164,18 +201,18 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 22,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    borderColor: Colors.border,
+    borderColor: colors.border,
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   counterNumber: {
-    color: Colors.primary,
+    color: colors.primary,
     fontSize: 18,
     fontWeight: '900',
   },
   completeText: {
-    color: Colors.success,
+    color: colors.success,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -187,13 +224,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   disabledBtn: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.border,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderWidth: 1,
   },
   glowingBtn: {
-    backgroundColor: Colors.primary,
-    shadowColor: Colors.primary,
+    backgroundColor: colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
     shadowRadius: 10,

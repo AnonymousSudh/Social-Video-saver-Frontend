@@ -2,12 +2,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
 import { useDownloadContext } from '../../context/DownloadContext';
+import { useTheme } from '../../context/ThemeContext';
 import AdBanner from '../../ads/AdBanner';
 
 const DownloadsQueueScreen = () => {
   const { activeQueue, pauseDownload, resumeDownload, cancelDownload } = useDownloadContext();
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
 
   // Find the primary download (the one that is downloading, or the first one in the queue)
   const activeItem = activeQueue.find(item => item.status === 'downloading') || activeQueue[0];
@@ -18,8 +21,8 @@ const DownloadsQueueScreen = () => {
     if (progress >= 100) return 'Finished';
     const sizeMB = parseFloat(fileSizeStr) || 8;
     const remainingMB = sizeMB * (1 - progress / 100);
-    const mockSpeed = 4.5; // MB/s
-    const secondsLeft = Math.ceil(remainingMB / mockSpeed);
+    const speed = 4.5; // MB/s
+    const secondsLeft = Math.ceil(remainingMB / speed);
     return `${secondsLeft}s left`;
   };
 
@@ -27,7 +30,7 @@ const DownloadsQueueScreen = () => {
     if (!activeItem) return null;
 
     const remainingTime = formatRemainingTime(activeItem.progress, activeItem.fileSize);
-    const mockSpeed = activeItem.status === 'downloading' ? '4.5 MB/s' : '0 KB/s';
+    const speedTextVal = activeItem.status === 'downloading' ? '4.5 MB/s' : '0 KB/s';
 
     return (
       <View style={styles.activeCard}>
@@ -37,7 +40,7 @@ const DownloadsQueueScreen = () => {
             {/* Glassmorphic inner circle */}
             <View style={styles.innerCircle}>
               <Text style={styles.percentText}>{activeItem.progress}%</Text>
-              <Text style={styles.speedText}>{mockSpeed}</Text>
+              <Text style={styles.speedText}>{speedTextVal}</Text>
               <Text style={styles.remainingText}>
                 {activeItem.status === 'paused' ? 'Paused' : remainingTime}
               </Text>
@@ -81,7 +84,7 @@ const DownloadsQueueScreen = () => {
           )}
 
           <TouchableOpacity style={[styles.controlBtn, styles.cancelBtn]} onPress={() => cancelDownload(activeItem.id)}>
-            <Text style={[styles.controlBtnText, { color: Colors.error }]}>✕ Cancel</Text>
+            <Text style={[styles.controlBtnText, { color: colors.error }]}>✕ Cancel</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -146,24 +149,24 @@ const DownloadsQueueScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   header: {
     padding: Spacing.m,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderBottomColor: colors.border,
     marginTop: Spacing.s,
   },
   headerTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 22,
     fontWeight: 'bold',
   },
   headerSubtitle: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 12,
     marginTop: 4,
   },
@@ -171,8 +174,8 @@ const styles = StyleSheet.create({
     padding: Spacing.m,
   },
   activeCard: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 24,
     padding: Spacing.l,
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 0, 110, 0.15)', // transparent primary track
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: Colors.primary,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 12,
@@ -206,33 +209,33 @@ const styles = StyleSheet.create({
     width: 124,
     height: 124,
     borderRadius: 62,
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
   },
   percentText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 28,
     fontWeight: '900',
   },
   speedText: {
-    color: Colors.primary,
+    color: colors.primary,
     fontSize: 12,
     fontWeight: 'bold',
     marginTop: 2,
   },
   remainingText: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 10,
     marginTop: 4,
   },
   activeInfoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.surfaceLight,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surfaceLight,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 14,
     padding: Spacing.s,
@@ -258,12 +261,12 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.s,
   },
   activeTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 13,
     fontWeight: 'bold',
   },
   activeMeta: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 11,
     marginTop: 2,
   },
@@ -275,28 +278,28 @@ const styles = StyleSheet.create({
   controlBtn: {
     flex: 1,
     paddingVertical: 12,
-    backgroundColor: Colors.surfaceLight,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surfaceLight,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
   },
   resumeBtn: {
-    backgroundColor: Colors.primary,
+    backgroundColor: colors.primary,
   },
   cancelBtn: {
     backgroundColor: 'rgba(255, 77, 109, 0.1)',
   },
   controlBtnText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 13,
     fontWeight: 'bold',
   },
   queueCard: {
     flexDirection: 'row',
-    backgroundColor: Colors.surface,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 16,
     padding: Spacing.s,
@@ -313,7 +316,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 6,
-    backgroundColor: Colors.surfaceLight,
+    backgroundColor: colors.surfaceLight,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -322,12 +325,12 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.s,
   },
   queueTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 12,
     fontWeight: 'bold',
   },
   queueMeta: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 10,
     marginTop: 2,
   },
@@ -335,7 +338,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   queueCancelText: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 14,
     fontWeight: 'bold',
   },
@@ -355,17 +358,17 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.m,
   },
   successIconSymbol: {
-    color: Colors.success,
+    color: colors.success,
     fontSize: 32,
     fontWeight: 'bold',
   },
   emptyTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 18,
     fontWeight: 'bold',
   },
   emptySubtitle: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 8,

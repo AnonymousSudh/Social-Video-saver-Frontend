@@ -2,12 +2,14 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
-import { Colors } from '../utils/theme';
+import { useTheme } from '../context/ThemeContext';
 
 const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-3940256099942544/6300978111';
 
 const AdBanner = () => {
   const [hasError, setHasError] = useState(false);
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
 
   if (hasError) {
     return (
@@ -32,27 +34,27 @@ const AdBanner = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
     paddingVertical: 4,
     borderTopWidth: 1,
-    borderTopColor: Colors.border,
+    borderTopColor: colors.border,
     minHeight: 50,
   },
   placeholder: {
     height: 50,
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
     borderTopWidth: 1,
-    borderTopColor: Colors.border,
+    borderTopColor: colors.border,
     width: '100%',
   },
   placeholderText: {
-    color: Colors.textMuted,
+    color: colors.textMuted,
     fontSize: 12,
     fontWeight: '500',
   },

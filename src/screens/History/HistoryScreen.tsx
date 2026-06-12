@@ -6,10 +6,13 @@ import Share from 'react-native-share';
 import { useDownloadContext } from '../../context/DownloadContext';
 import VideoPlayerModal from '../../components/VideoPlayerModal/VideoPlayerModal';
 import AdBanner from '../../ads/AdBanner';
-import { Colors, Spacing } from '../../utils/theme';
+import { Spacing } from '../../utils/theme';
+import { useTheme } from '../../context/ThemeContext';
 
 const HistoryScreen = () => {
   const { downloads, removeDownload } = useDownloadContext();
+  const { colors } = useTheme();
+  const styles = getStyles(colors);
   const [searchQuery, setSearchQuery] = useState('');
   
   // Video player modal state
@@ -105,7 +108,7 @@ const HistoryScreen = () => {
             style={[styles.actionBtn, styles.deleteBtn]} 
             onPress={() => handleDelete(item.id)}
           >
-            <Text style={[styles.actionBtnText, { color: Colors.error }]}>🗑 Delete</Text>
+            <Text style={[styles.actionBtnText, { color: colors.error }]}>🗑 Delete</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -120,7 +123,7 @@ const HistoryScreen = () => {
         <TextInput
           style={styles.searchBar}
           placeholder="Search downloaded videos..."
-          placeholderTextColor={Colors.textMuted}
+          placeholderTextColor={colors.textMuted}
           value={searchQuery}
           onChangeText={setSearchQuery}
           autoCapitalize="none"
@@ -164,31 +167,31 @@ const HistoryScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: colors.background,
   },
   header: {
     padding: Spacing.m,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderBottomColor: colors.border,
     marginTop: Spacing.s,
   },
   headerTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: Spacing.s,
   },
   searchBar: {
-    backgroundColor: Colors.surface,
-    borderColor: Colors.glassBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: Spacing.m,
     height: 44,
-    color: Colors.text,
+    color: colors.text,
     fontSize: 14,
   },
   listContent: {
@@ -197,10 +200,10 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   card: {
-    backgroundColor: Colors.surface,
+    backgroundColor: colors.surface,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
+    borderColor: colors.glassBorder,
     overflow: 'hidden',
   },
   cardHeader: {
@@ -257,25 +260,25 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.m,
   },
   title: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 14,
     fontWeight: 'bold',
   },
   creator: {
-    color: Colors.primary,
+    color: colors.primary,
     fontSize: 12,
     fontWeight: '600',
     marginTop: 2,
   },
   meta: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 11,
     marginTop: 4,
   },
   actionBar: {
     flexDirection: 'row',
     borderTopWidth: 1,
-    borderTopColor: Colors.border,
+    borderTopColor: colors.border,
     height: 44,
   },
   actionBtn: {
@@ -286,10 +289,10 @@ const styles = StyleSheet.create({
   },
   deleteBtn: {
     borderLeftWidth: 1,
-    borderLeftColor: Colors.border,
+    borderLeftColor: colors.border,
   },
   actionBtnText: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -313,12 +316,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
   emptyTitle: {
-    color: Colors.text,
+    color: colors.text,
     fontSize: 16,
     fontWeight: 'bold',
   },
   emptySubtitle: {
-    color: Colors.textSecondary,
+    color: colors.textSecondary,
     fontSize: 13,
     textAlign: 'center',
     marginTop: 8,
