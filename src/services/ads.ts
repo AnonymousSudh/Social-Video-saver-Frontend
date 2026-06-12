@@ -7,6 +7,9 @@ import {
   TestIds,
 } from 'react-native-google-mobile-ads';
 
+// Global Ads Toggle Flag (change to true to activate ads in future updates)
+export const SHOW_ADS = false;
+
 // Ad Unit IDs (Fallback to AdMob Test IDs)
 const INTERSTITIAL_UNIT_ID = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-3940256099942544/1033173712';
 const REWARDED_UNIT_ID = __DEV__ ? TestIds.REWARDED : 'ca-app-pub-3940256099942544/5224354917';
@@ -19,6 +22,10 @@ let isAdmobInitialized = false;
 let downloadCounter = 0;
 
 export const initAds = async () => {
+  if (!SHOW_ADS) {
+    console.log('AdMob: Ads are currently disabled by configuration');
+    return;
+  }
   try {
     if (isAdmobInitialized) return;
     
@@ -37,6 +44,7 @@ export const initAds = async () => {
 };
 
 export const loadInterstitial = () => {
+  if (!SHOW_ADS) return;
   try {
     interstitial = InterstitialAd.createForAdRequest(INTERSTITIAL_UNIT_ID, {
       requestNonPersonalizedAdsOnly: true,
@@ -62,6 +70,9 @@ export const loadInterstitial = () => {
 };
 
 export const showInterstitialAd = async (): Promise<boolean> => {
+  if (!SHOW_ADS) {
+    return false;
+  }
   return new Promise((resolve) => {
     try {
       if (interstitial && interstitial.loaded) {
@@ -83,6 +94,7 @@ export const showInterstitialAd = async (): Promise<boolean> => {
 };
 
 export const loadRewarded = () => {
+  if (!SHOW_ADS) return;
   try {
     rewarded = RewardedAd.createForAdRequest(REWARDED_UNIT_ID, {
       requestNonPersonalizedAdsOnly: true,
@@ -108,6 +120,9 @@ export const loadRewarded = () => {
 };
 
 export const showRewardedAd = async (): Promise<boolean> => {
+  if (!SHOW_ADS) {
+    return true; // Bypass as success if ads are disabled
+  }
   return new Promise((resolve) => {
     try {
       if (rewarded && rewarded.loaded) {
@@ -141,6 +156,9 @@ export const showRewardedAd = async (): Promise<boolean> => {
 };
 
 export const trackDownloadForAd = async (beforeDownload: boolean): Promise<boolean> => {
+  if (!SHOW_ADS) {
+    return false;
+  }
   if (beforeDownload) {
     console.log('AdMob: Showing interstitial before download starts');
     return await showInterstitialAd();
