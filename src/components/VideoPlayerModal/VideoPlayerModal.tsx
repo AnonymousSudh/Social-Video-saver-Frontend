@@ -124,7 +124,7 @@ const VideoPlayerModal: React.FC<Props> = ({ visible, videoPath, videoTitle, onC
         {/* Video Title Header */}
         <View style={styles.header}>
           <Text style={styles.title} numberOfLines={1}>
-            {videoTitle || 'InstaSave Pro Player'}
+            {videoTitle || 'InstaVideo Saver Player'}
           </Text>
         </View>
 

@@ -5,6 +5,7 @@ import RootNavigator from './src/navigation/RootNavigator';
 import { DownloadProvider } from './src/context/DownloadContext';
 import { ToastProvider } from './src/components/Toast/Toast';
 import { ThemeProvider } from './src/context/ThemeContext';
+import { CustomAlertProvider } from './src/components/CustomAlert/CustomAlert';
 import { initAds } from './src/services/ads';
 
 const App = () => {
@@ -45,7 +46,7 @@ const App = () => {
           <View style={styles.logoCircle}>
             <Text style={styles.logoSymbol}>📥</Text>
           </View>
-          <Text style={styles.splashTitle}>InstaSave Pro</Text>
+          <Text style={styles.splashTitle}>InstaVideo Saver</Text>
           <Text style={styles.splashTagline}>Download Reels & Videos Instantly</Text>
           <ActivityIndicator size="small" color="#FFFFFF" style={styles.loader} />
         </Animated.View>
@@ -56,11 +57,13 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <ToastProvider>
-          <DownloadProvider>
-            <RootNavigator />
-          </DownloadProvider>
-        </ToastProvider>
+        <CustomAlertProvider>
+          <ToastProvider>
+            <DownloadProvider>
+              <RootNavigator />
+            </DownloadProvider>
+          </ToastProvider>
+        </CustomAlertProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

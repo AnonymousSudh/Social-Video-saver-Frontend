@@ -56,7 +56,7 @@ const AdCountdownModal: React.FC<Props> = ({ visible, onComplete }) => {
             <Text style={styles.adSubtextMuted}>Ad-free experience</Text>
           </View>
           
-          <Text style={styles.adPromoTitle}>Unlock InstaSave Pro Premium</Text>
+          <Text style={styles.adPromoTitle}>Unlock InstaVideo Saver Premium</Text>
           
           <View style={styles.adPromoBenefits}>
             <Text style={styles.adBenefitItem}>⚡ Hyper-Fast Speeds (No limits)</Text>

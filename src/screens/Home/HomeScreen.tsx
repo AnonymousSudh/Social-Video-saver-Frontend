@@ -212,7 +212,7 @@ const HomeScreen = () => {
       <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Top Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>✨ InstaSave Pro</Text>
+          <Text style={styles.logo}>✨ InstaVideo Saver</Text>
           <TouchableOpacity style={styles.settingsBtn} onPress={() => navigation.navigate('Settings')}>
             <Text style={styles.settingsIcon}>⚙️</Text>
           </TouchableOpacity>

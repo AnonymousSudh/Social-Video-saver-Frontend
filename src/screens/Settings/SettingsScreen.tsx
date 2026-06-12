@@ -1,11 +1,11 @@
-// src/screens/Settings/SettingsScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Linking, ScrollView, Switch, Platform } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, ScrollView, Switch, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Spacing } from '../../utils/theme';
 import { useDownloadContext } from '../../context/DownloadContext';
 import { useToast } from '../../components/Toast/Toast';
 import { useTheme } from '../../context/ThemeContext';
+import { useCustomAlert } from '../../components/CustomAlert/CustomAlert';
 import PremiumModal from '../../components/PremiumModal/PremiumModal';
 import AdBanner from '../../ads/AdBanner';
 
@@ -13,6 +13,7 @@ const SettingsScreen = () => {
   const { clearDownloads } = useDownloadContext();
   const { showToast } = useToast();
   const { colors, isDarkMode, toggleDarkMode } = useTheme();
+  const { showAlert } = useCustomAlert();
   const styles = getStyles(colors);
 
   const [wifiOnly, setWifiOnly] = useState(false);
@@ -32,10 +33,10 @@ const SettingsScreen = () => {
   };
 
   const onClearHistory = () => {
-    Alert.alert(
-      'Delete History', 
-      'Are you sure you want to delete all downloaded files and clear history? This action is permanent.', 
-      [
+    showAlert({
+      title: 'Delete History', 
+      message: 'Are you sure you want to delete all downloaded files and clear history? This action is permanent.', 
+      buttons: [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Clear All',
@@ -46,7 +47,7 @@ const SettingsScreen = () => {
           },
         },
       ]
-    );
+    });
   };
 
   return (
@@ -155,11 +156,11 @@ const SettingsScreen = () => {
             <Text style={styles.itemText}>⭐ Rate App</Text>
             <Text style={styles.itemArrow}>▶</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.itemRowBtn} onPress={() => Alert.alert('Privacy Policy', 'Standard local data processing privacy policies apply.')}>
+          <TouchableOpacity style={styles.itemRowBtn} onPress={() => showAlert({ title: 'Privacy Policy', message: 'Standard local data processing privacy policies apply.' })}>
             <Text style={styles.itemText}>📄 Privacy Policy</Text>
             <Text style={styles.itemArrow}>▶</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.itemRowBtn} onPress={() => Alert.alert('Contact Us', 'Reach us at: support@instasavepro.com')}>
+          <TouchableOpacity style={styles.itemRowBtn} onPress={() => showAlert({ title: 'Contact Us', message: 'Reach us at: support@instasavepro.com' })}>
             <Text style={styles.itemText}>📧 Contact Us</Text>
             <Text style={styles.itemArrow}>▶</Text>
           </TouchableOpacity>

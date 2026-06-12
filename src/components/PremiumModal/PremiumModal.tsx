@@ -36,7 +36,7 @@ const PremiumModal: React.FC<Props> = ({ visible, onClose }) => {
           <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
             <Text style={styles.badge}>💎 PRO UPGRADE</Text>
             <Text style={styles.title}>Go Premium</Text>
-            <Text style={styles.subtitle}>Unlock the full power of InstaSave Pro</Text>
+            <Text style={styles.subtitle}>Unlock the full power of InstaVideo Saver</Text>
  
             {/* Benefits */}
             <View style={styles.benefitsContainer}>
