@@ -5,38 +5,50 @@ export type DownloadApiResponse = {
   downloadUrl: string;
   fileName: string;
   title: string;
+  thumbnail?: string;
+  author?: string;
   duration?: number;
 };
-
-// Change BASE_URL to your backend URL
-// For emulator Android use 10.0.2.2 if local, or Render hosted URL later
-const BASE_URL = 'https://unreinstated-nidia-unafflicting.ngrok-free.dev'; //
 
 export const apiDownload = async (
   url: string,
 ): Promise<DownloadApiResponse> => {
-  const response = await fetch(`${BASE_URL}/download`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const host = 'instagram-reels-downloader-api.p.rapidapi.com';
+  const apiKey = '5735b1b03dmsh9c0fe2b9f1079bap1a8231jsnbb2cf679d776';
+
+  console.log('🌐 Calling RapidAPI directly from the frontend...');
+  const response = await fetch(
+    `https://${host}/download?url=${encodeURIComponent(url)}`,
+    {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': apiKey,
+        'X-RapidAPI-Host': host,
+      },
     },
-    body: JSON.stringify({ url }),
-  });
+  );
 
   if (!response.ok) {
-    throw new Error('API failed. Unable to download.');
+    throw new Error(`API failed with status ${response.status}. Unable to download.`);
   }
 
-  const data = await response.json();
+  const result = await response.json();
+  const mediaData = result?.data;
+  const videoUrl = mediaData?.medias?.[0]?.url;
+  const shortcode = mediaData?.shortcode || 'video';
 
-  if (!data.success || !data.downloadUrl) {
+  if (!videoUrl) {
     throw new Error('Invalid video URL or unsupported format');
   }
 
   return {
-    success: data.success,
-    platform: data.platform,
-    downloadUrl: data.downloadUrl,
-    fileName: data.fileName,
+    success: true,
+    platform: 'instagram',
+    downloadUrl: videoUrl,
+    fileName: `${shortcode}.mp4`,
+    title: mediaData?.title || 'Instagram Video',
+    thumbnail: mediaData?.thumbnail || '',
+    author: mediaData?.author || 'Instagram Creator',
+    duration: mediaData?.duration || 0,
   };
 };

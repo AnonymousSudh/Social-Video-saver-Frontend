@@ -1,17 +1,18 @@
-// src/screens/Downloads/DownloadsScreen.tsx
+// src/screens/History/HistoryScreen.tsx
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Share from 'react-native-share';
 import { useDownloadContext } from '../../context/DownloadContext';
 import VideoPlayerModal from '../../components/VideoPlayerModal/VideoPlayerModal';
 import AdBanner from '../../ads/AdBanner';
 import { Colors, Spacing } from '../../utils/theme';
 
-const DownloadsScreen = () => {
+const HistoryScreen = () => {
   const { downloads, removeDownload } = useDownloadContext();
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Player state
+  // Video player modal state
   const [playerVisible, setPlayerVisible] = useState(false);
   const [selectedPath, setSelectedPath] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
@@ -61,7 +62,7 @@ const DownloadsScreen = () => {
           activeOpacity={0.8}
           onPress={() => handlePlayVideo(item.localPath, item.title)}
         >
-          {/* Thumbnail preview with play icon overlay */}
+          {/* Thumbnail Preview with Play Button Overlay */}
           <View style={styles.thumbnailContainer}>
             {item.thumbnail ? (
               <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
@@ -92,7 +93,7 @@ const DownloadsScreen = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Actions bar */}
+        {/* Action button bar */}
         <View style={styles.actionBar}>
           <TouchableOpacity 
             style={styles.actionBtn} 
@@ -112,8 +113,8 @@ const DownloadsScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Search Header */}
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+      {/* Header with Search */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Download History</Text>
         <TextInput
@@ -127,11 +128,17 @@ const DownloadsScreen = () => {
         />
       </View>
 
-      {/* History List */}
+      {/* History content list */}
       {filteredDownloads.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            {searchQuery ? 'No matching downloads found.' : 'Your download history is empty.'}
+          <View style={styles.emptyIconBox}>
+            <Text style={styles.emptyIconSymbol}>📥</Text>
+          </View>
+          <Text style={styles.emptyTitle}>No History Found</Text>
+          <Text style={styles.emptySubtitle}>
+            {searchQuery 
+              ? 'Try adjusting your search terms.' 
+              : 'Completed downloads will appear here. Start by saving reels!'}
           </Text>
         </View>
       ) : (
@@ -143,7 +150,7 @@ const DownloadsScreen = () => {
         />
       )}
 
-      {/* Custom Fullscreen Player */}
+      {/* Built-in player modal */}
       <VideoPlayerModal
         visible={playerVisible}
         videoPath={selectedPath}
@@ -153,7 +160,7 @@ const DownloadsScreen = () => {
 
       {/* Ads Banner */}
       <AdBanner />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -166,13 +173,13 @@ const styles = StyleSheet.create({
     padding: Spacing.m,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
+    marginTop: Spacing.s,
   },
   headerTitle: {
     color: Colors.text,
     fontSize: 22,
     fontWeight: 'bold',
     marginBottom: Spacing.s,
-    marginTop: Platform.OS === 'ios' ? 30 : 0,
   },
   searchBar: {
     backgroundColor: Colors.surface,
@@ -261,7 +268,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   meta: {
-    color: Colors.textMuted,
+    color: Colors.textSecondary,
     fontSize: 11,
     marginTop: 4,
   },
@@ -290,13 +297,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: Spacing.l,
+    padding: Spacing.xl,
+    marginTop: 60,
   },
-  emptyText: {
-    color: Colors.textMuted,
-    fontSize: 14,
+  emptyIconBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: 'rgba(255, 0, 110, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: Spacing.m,
+  },
+  emptyIconSymbol: {
+    fontSize: 28,
+  },
+  emptyTitle: {
+    color: Colors.text,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  emptySubtitle: {
+    color: Colors.textSecondary,
+    fontSize: 13,
     textAlign: 'center',
+    marginTop: 8,
+    paddingHorizontal: Spacing.xl,
+    lineHeight: 18,
   },
 });
 
-export default DownloadsScreen;
+export default HistoryScreen;
