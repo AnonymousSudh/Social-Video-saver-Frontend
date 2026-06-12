@@ -14,7 +14,7 @@ const AdBanner = () => {
   if (hasError) {
     return (
       <View style={styles.placeholder}>
-        <Text style={styles.placeholderText}>Support the App - Upgrade to Premium</Text>
+        <Text style={styles.placeholderText}>Support our free app by enabling internet connection</Text>
       </View>
     );
   }

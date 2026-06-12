@@ -6,7 +6,6 @@ import { useDownloadContext } from '../../context/DownloadContext';
 import { useToast } from '../../components/Toast/Toast';
 import { useTheme } from '../../context/ThemeContext';
 import { useCustomAlert } from '../../components/CustomAlert/CustomAlert';
-import PremiumModal from '../../components/PremiumModal/PremiumModal';
 import AdBanner from '../../ads/AdBanner';
 
 const SettingsScreen = () => {
@@ -20,9 +19,6 @@ const SettingsScreen = () => {
   const [autoPaste, setAutoPaste] = useState(true);
   const [notifications, setNotifications] = useState(true);
   
-  // Premium Upgrade Modal visibility
-  const [premiumVisible, setPremiumVisible] = useState(false);
-
   const onRateApp = () => {
     const url = 'https://play.google.com/store/apps/details?id=com.socialsaver';
     Linking.openURL(url).catch(() => showToast('Cannot open Play Store link', 'error'));
@@ -58,14 +54,6 @@ const SettingsScreen = () => {
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        {/* Premium Upgrade Banner */}
-        <TouchableOpacity style={styles.premiumBanner} onPress={() => setPremiumVisible(true)}>
-          <View>
-            <Text style={styles.premiumBannerTitle}>💎 Go Premium</Text>
-            <Text style={styles.premiumBannerSubtitle}>Get Ad-Free downloads, fast speeds, & more!</Text>
-          </View>
-          <Text style={styles.premiumBannerArrow}>▶</Text>
-        </TouchableOpacity>
 
         {/* Group 1: Downloads */}
         <Text style={styles.groupTitle}>Downloads</Text>
@@ -169,12 +157,6 @@ const SettingsScreen = () => {
         <View style={{ height: 20 }} />
       </ScrollView>
 
-      {/* Premium Upgrade Modal */}
-      <PremiumModal
-        visible={premiumVisible}
-        onClose={() => setPremiumVisible(false)}
-      />
-
       {/* Ad Banner */}
       <AdBanner />
     </SafeAreaView>
@@ -202,31 +184,6 @@ const getStyles = (colors: any) => StyleSheet.create({
   },
   scrollContent: {
     padding: Spacing.m,
-  },
-  premiumBanner: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: 'rgba(131, 56, 236, 0.15)',
-    borderColor: colors.secondaryAccent,
-    borderWidth: 1,
-    borderRadius: 16,
-    padding: Spacing.m,
-    marginBottom: Spacing.l,
-  },
-  premiumBannerTitle: {
-    color: colors.text,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  premiumBannerSubtitle: {
-    color: colors.textSecondary,
-    fontSize: 11,
-    marginTop: 2,
-  },
-  premiumBannerArrow: {
-    color: colors.text,
-    fontSize: 14,
   },
   groupTitle: {
     color: colors.secondaryAccent,

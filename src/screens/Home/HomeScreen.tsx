@@ -21,11 +21,11 @@ import { useToast } from '../../components/Toast/Toast';
 import { useTheme } from '../../context/ThemeContext';
 import { apiDownload } from '../../services/api';
 import AdBanner from '../../ads/AdBanner';
+import { showInterstitialAd } from '../../services/ads';
 
 import ClipboardPopup from '../../components/ClipboardPopup/ClipboardPopup';
 import QualitySheet from '../../components/QualitySheet/QualitySheet';
 import VideoPlayerModal from '../../components/VideoPlayerModal/VideoPlayerModal';
-import AdCountdownModal from '../../components/AdCountdownModal/AdCountdownModal';
 
 const INSTAGRAM_REGEX = /^(https?:\/\/)?(www\.)?instagram\.com\/(reel|p|tv)\/[a-zA-Z0-9_\-]+\/?(\?.*)?$/;
 
@@ -39,13 +39,11 @@ const HomeScreen = () => {
   const [clipboardPopupVisible, setClipboardPopupVisible] = useState(false);
   const [qualitySheetVisible, setQualitySheetVisible] = useState(false);
   const [playerVisible, setPlayerVisible] = useState(false);
-  const [adCountdownVisible, setAdCountdownVisible] = useState(false);
   
   // Video & preview metadata states
   const [loadedVideoData, setLoadedVideoData] = useState<any>(null);
   const [selectedVideoPath, setSelectedVideoPath] = useState('');
   const [selectedVideoTitle, setSelectedVideoTitle] = useState('');
-  const [pendingDownloadDetails, setPendingDownloadDetails] = useState<any>(null);
 
   const { showToast } = useToast();
   const { colors } = useTheme();
@@ -148,19 +146,14 @@ const HomeScreen = () => {
     setQualitySheetVisible(true);
   };
 
-  const handleSelectQuality = (quality: string, size: string) => {
+  const handleSelectQuality = async (quality: string, size: string) => {
     setQualitySheetVisible(false);
-    
-    // Store details for execution after interstitial ad countdown completes
-    setPendingDownloadDetails({ quality, size });
-    
-    // Show interstitial count down modal
-    setAdCountdownVisible(true);
-  };
+    if (!loadedVideoData) return;
 
-  const handleAdCountdownComplete = () => {
-    setAdCountdownVisible(false);
-    if (!loadedVideoData || !pendingDownloadDetails) return;
+    showToast('Starting download...', 'info');
+
+    // Show real full screen interstitial ad directly before queueing
+    await showInterstitialAd();
 
     addToQueue(
       loadedVideoData.url,
@@ -169,8 +162,8 @@ const HomeScreen = () => {
       loadedVideoData.thumbnail,
       loadedVideoData.author,
       loadedVideoData.duration,
-      pendingDownloadDetails.quality,
-      pendingDownloadDetails.size
+      quality,
+      size
     );
 
     showToast('Download started in background', 'success');
@@ -178,7 +171,6 @@ const HomeScreen = () => {
     // Reset view
     setUrl('');
     setLoadedVideoData(null);
-    setPendingDownloadDetails(null);
 
     // Navigate to Downloads tab
     navigation.navigate('Downloads');
@@ -345,11 +337,6 @@ const HomeScreen = () => {
         videoData={loadedVideoData}
         onSelectQuality={handleSelectQuality}
         onClose={() => setQualitySheetVisible(false)}
-      />
-
-      <AdCountdownModal
-        visible={adCountdownVisible}
-        onComplete={handleAdCountdownComplete}
       />
 
       <VideoPlayerModal

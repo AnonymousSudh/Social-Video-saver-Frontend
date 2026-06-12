@@ -24,7 +24,7 @@ const QualitySheet: React.FC<Props> = ({ visible, videoData, onSelectQuality, on
 
   const duration = videoData.duration || 30; // Fallback to 30 seconds
   const options = [
-    { label: '1080p Full HD', resolution: '1920x1080', size: `${(duration * 0.56).toFixed(1)} MB`, speed: '4.8 MB/s', tag: 'Premium' },
+    { label: '1080p Full HD', resolution: '1920x1080', size: `${(duration * 0.56).toFixed(1)} MB`, speed: '4.8 MB/s', tag: 'FHD' },
     { label: '720p HD', resolution: '1280x720', size: `${(duration * 0.27).toFixed(1)} MB`, speed: '3.9 MB/s', tag: 'HD' },
     { label: '480p SD', resolution: '854x480', size: `${(duration * 0.12).toFixed(1)} MB`, speed: '2.5 MB/s' },
     { label: '360p Mobile', resolution: '640x360', size: `${(duration * 0.075).toFixed(1)} MB`, speed: '1.8 MB/s' },
